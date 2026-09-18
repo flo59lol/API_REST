@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Project {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+
+  @@map("projects")
+}
+
+model Task {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(100)
+  description String? @db.VarChar(255)
+
+  @@map("tasks")
+}
+
+model Product {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(100)
+  price    Float
+  quantity Int    @default(0)
+
+  @@map("products")
+}
+
+model Genre {
+  id          Int     @id @default(autoincrement()) @map("id_genre")
+  name        String  @map("nom")
+  description String?
+  books       Book[]
+
+  @@map("genres")
+}
+
+model Book {
+  id              Int          @id @default(autoincrement()) @map("id_livre")
+  isbn            String
+  reference       String
+  title           String       @map("titre")
+  publicationDate DateTime?    @map("date_publication")
+  quantity        Int?         @map("quantite")
+  genreId         Int          @map("id_genre")
+  genre           Genre        @relation(fields: [genreId], references: [id])
+  loans           c[]
+
+  @@map("livres")
+}
+
+model c {
+  id        Int       @id @default(autoincrement()) @map("id_emprunt")
+  reference String
+  loanDate  DateTime? @map("date_emprunt")
+  dueDate   DateTime? @map("date_retoure_prevue")
+  bookId    Int       @map("id_livre")
+  memberId  Int       @map("id_membre")
+  book      Book      @relation(fields: [bookId], references: [id])
+
+  @@map("emprunts")
+}
