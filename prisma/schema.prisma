@@ -42,20 +42,20 @@ model Genre {
 }
 
 model Book {
-  id              Int          @id @default(autoincrement()) @map("id_livre")
+  id              Int       @id @default(autoincrement()) @map("id_livre")
   isbn            String
   reference       String
-  title           String       @map("titre")
-  publicationDate DateTime?    @map("date_publication")
-  quantity        Int?         @map("quantite")
-  genreId         Int          @map("id_genre")
-  genre           Genre        @relation(fields: [genreId], references: [id])
-  loans           c[]
+  title           String    @map("titre")
+  publicationDate DateTime? @map("date_publication")
+  quantity        Int?      @map("quantite")
+  genreId         Int       @map("id_genre")
+  genre           Genre     @relation(fields: [genreId], references: [id])
+  loans           Loan[]
 
   @@map("livres")
 }
 
-model c {
+model Loan {
   id        Int       @id @default(autoincrement()) @map("id_emprunt")
   reference String
   loanDate  DateTime? @map("date_emprunt")
