@@ -36,33 +36,60 @@ model Genre {
   id          Int     @id @default(autoincrement()) @map("id_genre")
   name        String  @map("nom")
   description String?
-  books       Book[]
 
   @@map("genres")
 }
 
 model Book {
-  id              Int       @id @default(autoincrement()) @map("id_livre")
+  id              Int          @id @default(autoincrement()) @map("id_livre")
   isbn            String
   reference       String
-  title           String    @map("titre")
-  publicationDate DateTime? @map("date_publication")
-  quantity        Int?      @map("quantite")
-  genreId         Int       @map("id_genre")
-  genre           Genre     @relation(fields: [genreId], references: [id])
-  loans           Loan[]
+  title           String       @map("titre")
+  publicationDate DateTime?    @map("date_publication")
+  quantity        Int?         @map("quantite")
+  genreId         Int          @map("id_genre")
+  bookAuthors     BookAuthor[]
 
   @@map("livres")
 }
 
-model Loan {
-  id        Int       @id @default(autoincrement()) @map("id_emprunt")
-  reference String
-  loanDate  DateTime? @map("date_emprunt")
-  dueDate   DateTime? @map("date_retoure_prevue")
-  bookId    Int       @map("id_livre")
-  memberId  Int       @map("id_membre")
-  book      Book      @relation(fields: [bookId], references: [id])
+model Member {
+  id               Int       @id @default(autoincrement()) @map("id_membre")
+  email            String
+  lastName         String    @map("nom")
+  firstName        String    @map("prenom")
+  phone            String    @map("telephone")
+  registrationDate DateTime? @map("date_inscription")
 
-  @@map("emprunts")
+  @@map("membres")
+}
+
+model Author {
+  id          Int          @id @default(autoincrement()) @map("id_auteur")
+  lastName    String       @map("nom")
+  firstName   String       @map("prenom")
+  nationality String?      @map("nationalite")
+  bookAuthors BookAuthor[]
+
+  @@map("auteurs")
+}
+
+model User {
+  id       Int     @id @default(autoincrement()) @map("id_utilisateur")
+  username String  @map("nom_utilisateur")
+  email    String
+  role     String?
+  password String? @map("mot_de_passe")
+
+  @@map("utilisateurs")
+}
+
+model BookAuthor {
+  bookId   Int    @map("id_livre")
+  authorId Int    @map("id_auteur")
+  book     Book   @relation(fields: [bookId], references: [id])
+  author   Author @relation(fields: [authorId], references: [id])
+
+  @@id([bookId, authorId])
+  @@map("livre_auteurs")
 }
