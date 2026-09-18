@@ -30,28 +30,25 @@ export default class ProductRepository {
         return newProduct;
     }
 
-    update(id: number, updatedProduct: Product): Product | undefined {
-        const productIndex = ProductRepository.products.findIndex(product => product.id === id);
-        if (productIndex !== -1) {
-            const product = ProductRepository.products[productIndex];
-            if (!product) {
-                return undefined;
-            }
-            product.name = updatedProduct.name;
-            product.price = updatedProduct.price;
-            product.quantity = updatedProduct.quantity;
-            return product;
+    update(id: number, updatedProduct: Product): Product {
+        const product = ProductRepository.products.find(product => product.id === id);
+        if (!product) {
+            throw new Error(`Product with id ${id} not found`);
         }
-        return undefined;
+        product.name = updatedProduct.name;
+        product.price = updatedProduct.price;
+        product.quantity = updatedProduct.quantity;
+        return product;
     }
 
     delete(id: number): boolean {
-        const productIndex = ProductRepository.products.findIndex(product => product.id === id);
-        if (productIndex !== -1) {
-            ProductRepository.products.splice(productIndex, 1);
-            return true;
+        const product = ProductRepository.products.find(product => product.id === id);
+        if (!product) {
+            throw new Error(`Product with id ${id} not found`);
         }
-        return false;
-    }
+        ProductRepository.products = ProductRepository.products.filter(p => p.id !== id);
 
+        return true;
+
+    }
 }
