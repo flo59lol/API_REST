@@ -256,35 +256,35 @@ async function main() {
     // LOANS
     // ============================================================
 
-    await prisma.loan.create({
-        data: {
-            reference: "EMP-001",
-            loanDate: new Date("2026-09-01"),
-            dueDate: new Date("2026-09-15"),
-            bookId: book1984.id,
-            memberId: member1.id,
-        },
-    });
+    // await prisma.loan.create({
+    //     data: {
+    //         reference: "EMP-001",
+    //         loanDate: new Date("2026-09-01"),
+    //         dueDate: new Date("2026-09-15"),
+    //         bookId: book1984.id,
+    //         memberId: member1.id,
+    //     },
+    // });
 
-    await prisma.loan.create({
-        data: {
-            reference: "EMP-002",
-            loanDate: new Date("2026-09-05"),
-            dueDate: new Date("2026-09-19"),
-            bookId: petitPrince.id,
-            memberId: member2.id,
-        },
-    });
+    // await prisma.loan.create({
+    //     data: {
+    //         reference: "EMP-002",
+    //         loanDate: new Date("2026-09-05"),
+    //         dueDate: new Date("2026-09-19"),
+    //         bookId: petitPrince.id,
+    //         memberId: member2.id,
+    //     },
+    // });
 
-    await prisma.loan.create({
-        data: {
-            reference: "EMP-003",
-            loanDate: new Date("2026-09-10"),
-            dueDate: new Date("2026-09-24"),
-            bookId: fondation.id,
-            memberId: member3.id,
-        },
-    });
+    // await prisma.loan.create({
+    //     data: {
+    //         reference: "EMP-003",
+    //         loanDate: new Date("2026-09-10"),
+    //         dueDate: new Date("2026-09-24"),
+    //         bookId: fondation.id,
+    //         memberId: member3.id,
+    //     },
+    // });
 
     // ============================================================
     // USERS
@@ -314,6 +314,22 @@ async function main() {
             email: "user@example.com",
             role: "USER",
             password: "password123",
+        },
+    });
+
+    await prisma.project.findMany();
+
+    await prisma.task.findMany();
+
+    await prisma.user.findMany({
+        where: {
+            role: "MEMBER",
+        }
+    });
+
+    await prisma.project.findMany({
+        filter: {
+            description: true,
         },
     });
 }
